@@ -1,0 +1,61 @@
+# ============================================================
+#  OPEN PENETRATION — Configuration File
+# ============================================================
+
+# Lab Mode Toggle
+# ----------------
+# lab_mode: true  = No warnings, no confirmations, no scope enforcement
+#                   For isolated lab environments only
+# lab_mode: false = Full warnings and scope enforcement enabled
+#                   For production/authorized testing with all safety checks
+lab_mode: true
+
+# Server Configuration
+# --------------------
+server:
+  host: "0.0.0.0"
+  port: 8080
+  # max_connections: 10  # Future: limit concurrent connections
+
+# Logging Configuration
+# ---------------------
+logging:
+  enabled: true
+  log_file: "penetration.log"
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+
+# SSL Configuration (Optional)
+# ----------------------------
+# Uncomment to enable HTTPS support
+# ssl:
+#   enabled: true
+#   certfile: "/path/to/cert.pem"
+#   keyfile: "/path/to/key.pem"
+
+# Capture Configuration
+# ---------------------
+capture:
+  save_credentials: true
+  save_system_info: true
+  redirect_url: ""  # Leave empty for no redirect after capture
+
+# Tier Configuration
+# ------------------
+# Tiers 1-4: Scope enforcement only when lab_mode: false
+# Tier 5: Always enforced regardless of lab_mode
+tiers:
+  tier_1:
+    name: "Reconnaissance"
+    scope_enforcement: true
+  tier_2:
+    name: "Website Cloning"
+    scope_enforcement: true
+  tier_3:
+    name: "Server Operations"
+    scope_enforcement: true
+  tier_4:
+    name: "Credential Capture"
+    scope_enforcement: true
+  tier_5:
+    name: "Critical Operations"
+    scope_enforcement: true  # Always enforced
