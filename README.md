@@ -314,6 +314,9 @@ Platform: Win32
 |---------|-------------|
 | 🔒 **Lab Mode** | Disable all warnings for isolated environments |
 | 🎚️ **Tier System** | Granular scope enforcement per operation |
+| 🛡️ **Scope Whitelist** | Restrict cloning operations to authorized domains (`allowed_domains`) |
+| 🔐 **Data Masking** | Protect cleartext passwords in logs (`data_protection.mask_credentials`) |
+| ⚠️ **Security Awareness Mode** | Display interactive educational notice after form submission (`awareness_mode`) |
 | 📝 **Logging** | Full activity log with timestamps |
 | 🛑 **Graceful Shutdown** | Clean server stop with Ctrl+C |
 | ⚠️ **Authorization Checks** | Confirm before sensitive operations |
@@ -329,6 +332,12 @@ Platform: Win32
 ---
 
 ## 🛠️ Troubleshooting
+
+<details>
+<summary><b>❌ "ImportError: Failed to import test module: test_phish"</b></summary>
+
+Make sure you are inside the repository directory (`cd WEB-OPEN-PENETRATIOn`) before running `python3 -m unittest test_phish.py`.
+</details>
 
 <details>
 <summary><b>❌ "Config file not found"</b></summary>
