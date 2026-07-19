@@ -15,7 +15,32 @@ lab_mode: true
 server:
   host: "0.0.0.0"
   port: 8080
-  # max_connections: 10  # Future: limit concurrent connections
+
+# Scope & Authorization Control
+# -----------------------------
+# Explicit whitelist of authorized target domains (empty list = allow all in lab mode)
+allowed_domains:
+  - "example.com"
+  - "example.org"
+  - "example.net"
+  - "localhost"
+  - "127.0.0.1"
+  - "0.0.0.0"
+  - "test.internal"
+  - "lab.local"
+  - "corp-test.local"
+
+# Data Protection & Safety
+# ------------------------
+data_protection:
+  mask_credentials: false  # Mask sensitive fields (password, pass, secret) in logs
+
+# Security Awareness Mode
+# -----------------------
+# When enabled, presents an educational landing page to targets after form submission
+awareness_mode:
+  enabled: false
+  custom_message: "This was a simulated security awareness exercise conducted by your security team."
 
 # Logging Configuration
 # ---------------------
@@ -23,14 +48,6 @@ logging:
   enabled: true
   log_file: "penetration.log"
   log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
-
-# SSL Configuration (Optional)
-# ----------------------------
-# Uncomment to enable HTTPS support
-# ssl:
-#   enabled: true
-#   certfile: "/path/to/cert.pem"
-#   keyfile: "/path/to/key.pem"
 
 # Capture Configuration
 # ---------------------

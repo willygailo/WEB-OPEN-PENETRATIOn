@@ -152,14 +152,28 @@ Edit `config.yaml` to customize behavior:
 
 ```yaml
 # 🔧 Lab Mode Toggle
-# true  = No warnings, no confirmations (isolated labs)
-# false = Full scope enforcement active (production testing)
 lab_mode: true
 
 # 🖥️ Server Configuration
 server:
   host: "0.0.0.0"      # Bind address
   port: 8080            # Server port
+
+# 🛡️ Scope & Authorization Control
+allowed_domains:
+  - "example.com"
+  - "example.org"
+  - "localhost"
+  - "127.0.0.1"
+
+# 🔐 Data Protection & Safety
+data_protection:
+  mask_credentials: true  # Mask sensitive fields (password, pin, secret) in log files
+
+# ⚠️ Security Awareness Mode
+awareness_mode:
+  enabled: true
+  custom_message: "This was a simulated security awareness exercise conducted by your IT Security team."
 
 # 📝 Logging Configuration
 logging:

