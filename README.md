@@ -51,6 +51,7 @@
 
 ### 🌐 Website Cloning
 - ✅ Instant website cloning via URL
+- ✅ Base URL tag (`<base href="...">`) injection for CSS/image asset loading
 - ✅ Automatic HTML form rewriting
 - ✅ JavaScript injection for capture
 - ✅ Preserves page layout & styling
@@ -82,7 +83,7 @@
 - ✅ Lab mode toggle
 - ✅ Tiered scope enforcement
 - ✅ Graceful shutdown (Ctrl+C)
-- ✅ Full activity logging
+- ✅ Automated unit testing suite (`test_phish.py`)
 
 </td>
 </tr>
@@ -96,6 +97,7 @@
 open-penetration/
 │
 ├── 📄 Phish.py              # 🔧 Main tool — core logic
+├── 🧪 test_phish.py         # 🧪 Unit test suite
 ├── ⚙️ config.yaml           # 🎛️ Configuration file
 ├── 📦 requirements.txt      # 📚 Python dependencies
 ├── 🛠️ install.sh            # 🚀 Setup script
@@ -211,6 +213,25 @@ capture:
 | `-d, --domain` | Target website URL to clone | ✅ |
 | `-p, --port` | Server port (overrides config) | ❌ |
 | `-c, --config` | Config file path | ❌ |
+
+---
+
+## 🧪 Unit Testing
+
+Run the automated unit test suite to verify configuration loading, tier scope checks, and HTML DOM parsing:
+
+```bash
+python3 -m unittest test_phish.py
+```
+
+Expected output:
+```
+...
+----------------------------------------------------------------------
+Ran 3 tests in 0.029s
+
+OK
+```
 
 ---
 
