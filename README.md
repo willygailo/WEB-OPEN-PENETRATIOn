@@ -134,7 +134,13 @@ chmod +x install.sh run.sh
 ./run.sh -d https://target-website.com
 ```
 
-🎉 **That's it!** The tool will clone the target and start the phishing server.
+### 4️⃣ Run Unit Tests
+
+```bash
+python3 -m unittest test_phish.py
+```
+
+🎉 **That's it!** The tool will clone the target and start the server.
 
 ---
 
